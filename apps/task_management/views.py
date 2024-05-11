@@ -120,7 +120,6 @@ class WorkerTaskUpdate(APIView):
                     
                     serializer = UpdateTaskManageForWorkerSerializer(task.first(), data=data)
                     if serializer.is_valid():
-                        # import pdb; pdb.set_trace();
                         serializer.save()
                         return Response(serializer.data, status=status.HTTP_200_OK)
                     else:

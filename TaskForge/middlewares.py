@@ -16,7 +16,6 @@ class LoggingMiddleware:
 
     def __call__(self, request):
         # Check if the request path starts with '/task-management/'
-        import pdb; pdb.set_trace();
         if request.path.startswith('/task-management/'):
             # Log information about the request
             logger.info(f"API Request: {request.method} {request.path}, IP: {request.META['REMOTE_ADDR']}")
