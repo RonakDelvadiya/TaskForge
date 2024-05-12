@@ -32,6 +32,9 @@ jobs:
       
       # - name: Collect static files
       #   run: python manage.py collectstatic
+
+      - name: Run Testcases
+        run: python manage.py test
       
       - name: Migrate DB
         run: python manage.py migrate
