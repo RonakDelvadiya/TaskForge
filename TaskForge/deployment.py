@@ -2,11 +2,8 @@ import os
 from .settings import *
 
 SECRET_KEY = os.environ['SECRET']
-try :
-    ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
-    CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
-except :
-    ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
 DEBUG = True
 
 # WhiteNoise configuration
