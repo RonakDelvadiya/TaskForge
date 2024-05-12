@@ -1,7 +1,10 @@
 from django.db import models
 from users.models import UserProfile
 
-
+"""
+Model to manage most common fields. 
+By inheriting this model mentioned field will be added automatically.
+"""
 class BaseModel(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -37,10 +40,10 @@ class TaskManage(BaseModel):
     ]
 
     title = models.CharField(max_length=100, db_index=True)
-    task_status = models.CharField(max_length=20, choices=TASK_STATUS, db_index=True, default='pending')
+    task_status = models.CharField(max_length=20, choices=TASK_STATUS, db_index=True, default='pending') 
     description = models.TextField(blank=True, null=True)
-    priority = models.PositiveBigIntegerField(default=1)
-    severity = models.PositiveBigIntegerField(default=1)
+    priority = models.PositiveBigIntegerField(default=1) # Added as an int field because its easy to sort by this field. 
+    severity = models.PositiveBigIntegerField(default=1) # Added as an int field because its easy to sort by this field.
     deadline = models.DateField(db_index=True)
     assignee = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='tasks_assigned_to')
     assignee_note = models.TextField(blank=True, null=True)
@@ -53,9 +56,10 @@ class TaskManage(BaseModel):
         return self.title
     
     class Meta:
-        ordering = ("priority", "severity", "-deadline",)
+        # app_label = 'task_management_model'
+        ordering = ("priority", "severity", "-deadline",) # Default behaviour of listing of this model.
     
-    @classmethod # it can be use explicitly, For example I have added.
+    @classmethod # it can be use explicitly, This is for example I have added only, in code it is not used anywhere.
     def get_tasks(cls, status=None, assignee=None, manager=None, is_active=True):
         queryset = cls.objects.filter(is_active=is_active)
         if status:

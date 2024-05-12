@@ -33,10 +33,10 @@ class TaskManageCrudOperation(generics.ListAPIView):
     }
 
     def get_queryset(self):
-        if self.request.user.role == "Service Manager" or self.request.user.is_superuser :
+        if self.request.user.role == "Service Manager" or self.request.user.is_superuser : # Admin and Service Manager can see all the task.
             return TaskManage.objects.filter(is_active=True)
         else:
-            return TaskManage.objects.filter(is_active=True, assignee=self.request.user)
+            return TaskManage.objects.filter(is_active=True, assignee=self.request.user) # Other than Admin and Service Manager, everyone can see own assigned Tasks.
 
     
     """
@@ -53,10 +53,10 @@ class TaskManageCrudOperation(generics.ListAPIView):
     """
     def post(self, request):
         try:
-            if request.user.role == "Service Manager" or self.request.user.is_superuser :
+            if request.user.role == "Service Manager" or self.request.user.is_superuser : # Only Admin and Service Manager can post/create tasks.
                 data = request.data
-                data["manager"] = self.request.user.id
-                if "id" in data :
+                data["manager"] = self.request.user.id # Creator will be manager of that created task.
+                if "id" in data : # Checking id, if id is present then user wants to update task.
                     task = TaskManage.objects.get(id=data["id"])
                     serializer = AddUpdateTaskManageSerializer(task, data=data)
                     if serializer.is_valid():
@@ -64,7 +64,7 @@ class TaskManageCrudOperation(generics.ListAPIView):
                         return Response(serializer.data, status=status.HTTP_200_OK)
                     else:
                         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                else:
+                else: # Without id task will be post
                     serializer = AddUpdateTaskManageSerializer(data=data)
                     if serializer.is_valid():
                         serializer.save(manager=request.user)
@@ -107,15 +107,15 @@ class WorkerTaskUpdate(APIView):
     """
     def put(self, request):
         try:
-            if request.user.role == "Worker" or self.request.user.is_superuser:
+            if request.user.role == "Worker" or self.request.user.is_superuser: # Only Admin and Worker can put/update task.
                 data = request.data
                 task_id = data.get("id")
-                if not task_id :
+                if not task_id : # If id is not present in request body hen error will come.
                     return Response({'error': 'id is required to update a task.'}, status=status.HTTP_400_BAD_REQUEST)
                 
                 task = TaskManage.objects.filter(id=task_id, assignee=request.user)
-                if task : 
-                    if data.get('task_status') == 'completed' and not data.get('completion_reason'):
+                if task : # Checking if task is present for given id and assignee is same as logged in user.
+                    if data.get('task_status') == 'completed' and not data.get('completion_reason'): # If user wants to update status as "completed" then completion reason will be mandatory.
                         return Response({'error': 'Completion reason is required to update as a completed tasks.'}, status=status.HTTP_400_BAD_REQUEST)
                     
                     serializer = UpdateTaskManageForWorkerSerializer(task.first(), data=data)

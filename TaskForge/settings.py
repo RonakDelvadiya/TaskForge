@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
     # Project app
     'users',
-    "task_management"
+    'task_management',
 ]
 
 MIDDLEWARE = [

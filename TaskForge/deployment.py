@@ -1,3 +1,9 @@
+"""
+The variable are declared in file will be override for Azure deployment.
+The environment variables configured on Azure which we can not expose publicly due to security issue. 
+"""
+
+
 import os 
 from .settings import *
 
@@ -25,9 +31,8 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 dbname_var = os.environ["DBNAME"]
-print("dbname_var",dbname_var)
-print("type(dbname_var)",type(dbname_var))
 host_var = os.environ["HOST"]
 user_var = os.environ["USER"]
 password_var = os.environ["PASSWORD"]
