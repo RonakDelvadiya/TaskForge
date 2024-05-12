@@ -2,6 +2,7 @@
 /task_forge.log
 /task_forge_api_requests.log
 /static/*
+/staticfiles/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

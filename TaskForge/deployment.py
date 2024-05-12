@@ -27,7 +27,6 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 dbname_var = os.environ["DBNAME"]
 print("dbname_var",dbname_var)
 print("type(dbname_var)",type(dbname_var))
